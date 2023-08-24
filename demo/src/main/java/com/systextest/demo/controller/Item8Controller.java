@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import javax.servlet.http.HttpServletRequest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.systextest.demo.model.Data_8;
 
@@ -40,7 +42,16 @@ public class Item8Controller {
 		storeRoom4.setAbout("https://localhost/maximo/oslc/os/thsrc_item_issueunit/_5Lq65pmC");
 		listData.add(storeRoom4);
 		ModelAndView modelAndView = new ModelAndView("result8");
+		// Get the HttpServletRequest
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
 
+        // Get the request URL and other relevant information
+        String requestUrl = request.getRequestURL().toString();
+        String queryString = request.getQueryString();
+        String fullUrl = (queryString == null) ? requestUrl : requestUrl + "?" + queryString;
+
+        // Log the URL
+        logger.info("Frontend request URL: " + fullUrl);
 		logger.info(listData.toString());
         modelAndView.addObject("jsonData", listData);
         return modelAndView;
