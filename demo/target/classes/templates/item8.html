@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Item8</title>
+</head>
+<body>
+    <form id="storeroomForm" method="GET">
+    <h1>Item8</h1>
+        <p><a href="/">返回</a></p>
+        <input type="submit" value="Submit">
+    </form>
+    <script>
+        const storeroomForm = document.getElementById("storeroomForm");
+
+        storeroomForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            const queryString = `oslc.select=*&_dropnulls=0&_lid=WPSS_USER&_lpwd=Wpss12345`;
+            const finalURL = `/maximo/oslc/os/THSRC_ITEM_ISSUEUNIT?${queryString}`;
+    
+   
+            // Redirect to the final URL
+            window.location.href = finalURL;
+        });
+    </script>
+</body>
+</html>
