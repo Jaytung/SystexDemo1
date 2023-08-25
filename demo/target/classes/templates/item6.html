@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Item5</title>
+</head>
+<body>
+    <h1>Item5</h1>
+    <form id="itemForm">
+        <label for="oslc.select">oslc.select:</label>
+        <input type="text" id="oslc.select" name="oslc.select" value="*" required>
+        <br>
+        <br>
+        <label for="_dropnulls">dropnulls:</label>
+        <input type="text" id="_dropnulls" name="_dropnulls" value="0" required>
+        <br>
+        <br>
+        <label for="_lid">Username:</label>
+        <input type="text" id="_lid" name="_lid" value="WPSS_USER" required>
+        <br>
+        <br>
+        <label for="_lpwd">Password:</label>
+        <input type="password" id="_lpwd" name="_lpwd" value="Wpss12345" required>
+        <br>
+        <p><a href="/">返回</a></p>
+        <input type="submit" value="Submit">
+    </form>
+
+    <script>
+        document.getElementById("itemForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const oslcSelect = document.getElementById("oslc.select").value;
+            const dropnulls = document.getElementById("_dropnulls").value;
+            const username = document.getElementById("_lid").value;
+            const password = document.getElementById("_lpwd").value;
+
+            const url = `/maximo/oslc/os/storeroom?oslc.select=${oslcSelect}&_dropnulls=${dropnulls}&_lid=${username}&_lpwd=${password}`;
+
+            // Redirect to the generated URL
+            window.location.href = url;
+        });
+    </script>
+</body>
+</html>

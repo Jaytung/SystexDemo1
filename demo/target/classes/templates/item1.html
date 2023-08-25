@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Home</title>
+    </head>
+    <body>
+        <form id="myForm" action="/item1s" method="get">
+            <table>
+                <tr>
+                    <td align="right">Storeroom:</td>
+                    <td><input type="text" name="location" id="location" required></td>
+                </tr>
+                <tr>
+                    <td align="right">Start Date</td>
+                    <td><input type="date" name="startdate" id="startdate" required></td>
+                </tr>
+                <tr>
+                    <td align="right">End Date</td>
+                    <td><input type="date" name="enddate" id="enddate" required></td>
+                </tr>
+                <tr>
+                    <td align="right">Has Shelf Life Only</td>
+                    <td>
+                        <select name="hasshelflife" id="hasshelflife" required>
+                            <option value="Y">Y</option>
+                            <option value="N">N</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">A B C(A: Curbal>0, B:Curbal>0 or Physical Cnt>0,C: Curbal=0 Physical Cut=0)</td>
+                    <td>
+                        <select name="ABC" , id="ABC" required>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">From Bin (ex 01-R01,02-R01...)</td>
+                    <td><input type="text" name="fromBin" id="fromBin" required></td>
+                </tr>
+                <tr>
+                    <td align="right">To Bin (ex 01-R01,02-R01...)</td>
+                    <td><input type="text" name="toBin" id="toBin" required></td>
+                </tr>
+                <tr>
+                    <td align="right">A:庫存盤點清冊 B:庫存(異動日期)盤點清冊</td>
+                    <td>
+                        <select name="stockCheck" id="stockCheck" required>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">A:庫房排序後再依儲位排序 B:依儲位排序(不分庫房)</td>
+                    <td>
+                        <select name="stockSort" id="stockSort" required>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">
+                        <button type:"submit">submit</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </body>
+</html>
