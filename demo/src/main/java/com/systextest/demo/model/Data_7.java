@@ -6,6 +6,11 @@ public class Data_7 {
 	private String location;
 	private String about;
 
+	@Override
+	public String toString() {
+		return "Data_7 [itemnum=" + itemnum + ", location=" + location + ", about=" + about + "]";
+	}
+
 	public String getItemnum() {
 		return itemnum;
 	}

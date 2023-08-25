@@ -84,7 +84,7 @@ public class Item7Controller {
 
         // Log the URL
         logger.info("Frontend request URL: " + fullUrl);
-		logger.info(storeRoom4.toString());
+		logger.info(listData.toString());
         ModelAndView modelAndView = new ModelAndView("result7");
         
         modelAndView.addObject("jsonData", listData);
