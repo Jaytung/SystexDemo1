@@ -4,9 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 import org.apache.log4j.Logger;
 
 
@@ -14,14 +18,23 @@ import javax.servlet.http.HttpServletRequest;
 
 
 @RestController
+@RequestMapping("/maximo/oslc/os")
 public class Item1And2Controller {
 
 
     private static final Logger logger = Logger.getLogger(Item1And2Controller.class);
 
-    @GetMapping("/item1s")
+    @GetMapping("/THSRC_WPSS_STO")
     public ModelAndView item1Method(
-            @RequestParam(value = "location") String location,
+		@RequestParam(value = "oslc.select", defaultValue = "*") String select,
+		@RequestParam(value = "_dropnulls", defaultValue = "0") int dropNulls,
+		@RequestParam(value = "oslc.where", defaultValue = "location+in+ LD,WD and transdate>=2021/06/01 and transdate<=2022/07/31") String where,
+		@RequestParam(value = "_lid", defaultValue = "WPSS_USER") String lid,
+		@RequestParam(value = "_lpwd", defaultValue = "Wpss12345") String lpwd) throws JsonProcessingException {
+
+    	return null;
+    }
+       /*     @RequestParam(value = "location") String location,
             @RequestParam(value = "startdate") String startdate,
             @RequestParam(value = "enddate") String enddate,
             @RequestParam(value = "hasshelflife") String hasshelflife,
@@ -130,7 +143,7 @@ public class Item1And2Controller {
         // Pass the JSON data to the view
         modelAndView.addObject("jsonData", item1);
         return modelAndView;
-    }
+    }*/
     //return JSON
     @GetMapping("/item1json")
     public Map<String, Object> item1Json(
