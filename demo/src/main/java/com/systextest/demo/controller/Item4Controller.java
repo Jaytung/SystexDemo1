@@ -26,8 +26,7 @@ public class Item4Controller {
 	@Autowired
 	private Data_4 data_4;
 	private static final Logger logger = Logger.getLogger(Item4Controller.class);
-	
-	// http://localhost:8080/maximo/oslc/os/THSRC_WPSS_ROT?oslc.select=*&_dropnulls=0&oslc.where=location+in+%5B%22LD%22%2C%22WD%22%5D+and+bin%3E%3D%2201%22+and+bin%3C%3D%2206%22&_lid=WPSS_USER&_lpwd=Wpss12345
+
 	@GetMapping("/THSRC_WPSS_ROT")
 	public ModelAndView getData4(@RequestParam(value = "oslc.select", defaultValue = "*") String select,
 			@RequestParam(value = "_dropnulls", defaultValue = "0") int dropNulls,
@@ -61,18 +60,21 @@ public class Item4Controller {
 			data_4.setLocation(locationConditions);
 		}
 
-		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+				.getRequest();
 
-        String requestUrl = request.getRequestURL().toString();
-        String queryString = request.getQueryString();
-        String fullUrl = (queryString == null) ? requestUrl : requestUrl + "?" + queryString;
+		String requestUrl = request.getRequestURL().toString();
+		String queryString = request.getQueryString();
+//        String fullUrl = (queryString == null) ? requestUrl : requestUrl + "?" + queryString;
 
-		logger.info("MAXIMO需協助開發程式支數-項目4 週轉件設備盤點清冊");
-		logger.info(fullUrl);
-		logger.info("JSON");
-		logger.info(data_4.toString());
-		ModelAndView modelAndView = new ModelAndView("result4"); // Specify the HTML file name without the extension
-        modelAndView.addObject("jsonData", data_4.getMap()); // Pass the JSON data to the view
+		String URL = requestUrl + "?oslc.select=" + select + "&_dropnulls=" + dropNulls + "&oslc.where=" + where
+				+ "&_lid=" + lid + "&_lpwd=" + lpwd;
+		//System.out.println(URL);
+
+		logger.info("MAXIMO需協助開發程式支數-項目4 週轉件設備盤點清冊: " + URL);
+		logger.info("JSON :" + data_4.toString());
+		ModelAndView modelAndView = new ModelAndView("result4");
+		modelAndView.addObject("jsonData", data_4.getMap());
 		return modelAndView;
 	}
 

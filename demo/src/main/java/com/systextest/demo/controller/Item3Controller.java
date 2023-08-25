@@ -1,5 +1,9 @@
 package com.systextest.demo.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,7 +31,7 @@ public class Item3Controller {
 	private Data_3 data_3;
 
 	private static final Logger logger = Logger.getLogger(Item3Controller.class);
-	// http://localhost:8080/maximo/oslc/os/THSRC_WPSS_COUNTINGL?oslc.select=*&_dropnulls=0&oslc.where=location+in+%5B%22LD%22%2C%22WD%22%5D+and+transdate%3E%3D%222021%2F06%2F01%22+and+transdate%3C%3D%222022%2F07%2F31%22&_lid=WPSS_USER&_lpwd=Wpss12345
+
 	@GetMapping("/THSRC_WPSS_COUNTINGL")
 	public ModelAndView getData3(@RequestParam(value = "oslc.select", defaultValue = "*") String select,
 			@RequestParam(value = "_dropnulls", defaultValue = "0") int dropNulls,
@@ -59,11 +63,15 @@ public class Item3Controller {
 		if (!locationConditions.isEmpty()) {
 			data_3.setLocation(locationConditions);
 		}
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+				.getRequest();
 
-        String requestUrl = request.getRequestURL().toString();
-        String queryString = request.getQueryString();
-        String fullUrl = (queryString == null) ? requestUrl : requestUrl + "?" + queryString;
+		String requestUrl = request.getRequestURL().toString();
+		String queryString = request.getQueryString();
+//        String fullUrl = (queryString == null) ? requestUrl : requestUrl + "?" + queryString;
+		String URL = requestUrl + "?oslc.select=" + select + "&_dropnulls=" + dropNulls + "&oslc.where=" + where
+				+ "&_lid=" + lid + "&_lpwd=" + lpwd;
+		//System.out.println(URL);
 
 //		System.out.println("oslc.select : " + select);
 //		System.out.println("_dropnulls : " + dropNulls);
@@ -73,12 +81,11 @@ public class Item3Controller {
 //		System.out.println("Location: " + locationConditions);
 //		System.out.println("Start Date: " + startDate);
 //		System.out.println("End Date: " + endDate);
-		logger.info("MAXIMO需協助開發程式支數-項目3 庫存(異動)盤點清冊");
-		logger.info(fullUrl);
-		logger.info("JSON");
-		logger.info(data_3.toString());
-		ModelAndView modelAndView = new ModelAndView("result3"); // Specify the HTML file name without the extension
-        modelAndView.addObject("jsonData", data_3.getMap()); // Pass the JSON data to the view
+
+		logger.info("MAXIMO需協助開發程式支數-項目3 庫存(異動)盤點清冊: " + URL);
+		logger.info("JSON: " + data_3.toString());
+		ModelAndView modelAndView = new ModelAndView("result3");
+		modelAndView.addObject("jsonData", data_3.getMap());
 		return modelAndView;
 	}
 

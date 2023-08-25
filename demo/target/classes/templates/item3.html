@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,10 +6,9 @@
 <body>
     <h1>Storeroom Form</h1>
     <form id="storeroomForm" method="GET">
-        <label for="startDate">Storeroom:</label>
-        <input type="text" id="Text" name="oslc.where" value="LD,WD" required>*<br><br>
+        <label for="storeroom">Storeroom:</label>
+        <input type="text" id="storeroom" name="oslc.where" value="LD,WD" required>*<br><br>
         
-
         <label for="startDate">Start Date:</label>
         <input type="date" id="startDate" name="startDate" value="2021-06-01" required><br><br>
 
@@ -33,34 +31,34 @@
     </form>
 
     <script>
-        const storeroomForm = document.getElementById("storeroomForm");
+    const storeroomForm = document.getElementById("storeroomForm");
 
-        storeroomForm.addEventListener("submit", function (event) {
-            event.preventDefault();
-    
-            const storeroomValue = document.getElementById("Text").value;
-            const startDateValue = document.getElementById("startDate").value;
-            const endDateValue = document.getElementById("endDate").value;
+    storeroomForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+    	
+        const storeroomValue = document.getElementById("storeroom").value;
+        const storerooms = storeroomValue.split(',').map(s => `"${s}"`).join(',');
+        const startDateValue = document.getElementById("startDate").value;
+        const endDateValue = document.getElementById("endDate").value;
 
-            let oslcWhere = `location in [${storeroomValue}] and transdate>="${startDateValue}"" and transdate<="${endDateValue}"`;
+        let oslcWhere = `location+in+[${storerooms}] and transdate>="${startDateValue}" and transdate<="${endDateValue}"`;
 
-            // Append options if needed
-            const selectedOption = document.querySelector('input[name="option"]:checked').value;
-            if (selectedOption === "date") {
-                const customDateValue = document.getElementById("customDate").value;
-                oslcWhere += ` and ${customDateValue}`;
-            } else if (selectedOption === "text") {
-                const customTextValue = document.getElementById("customText").value;
-                oslcWhere += ` and ${customTextValue}`;
-            }
+        // Append options if needed
+        const selectedOption = document.querySelector('input[name="option"]:checked').value;
+        if (selectedOption === "date") {
+            const customDateValue = document.getElementById("customDate").value;
+            oslcWhere += ` and ${customDateValue}`;
+        } else if (selectedOption === "text") {
+            const customTextValue = document.getElementById("customText").value;
+            oslcWhere += ` and ${customTextValue}`;
+        }
 
-            const queryString = `oslc.select=*&_dropnulls=0&oslc.where=${encodeURIComponent(oslcWhere)}&_lid=WPSS_USER&_lpwd=Wpss12345`;
-            const finalURL = `/maximo/oslc/os/THSRC_WPSS_COUNTINGL?${queryString}`;
-    
-   
-            // Redirect to the final URL
-            window.location.href = finalURL;
-        });
+        const queryString = `oslc.select=*&_dropnulls=0&oslc.where=${encodeURIComponent(oslcWhere)}&_lid=WPSS_USER&_lpwd=Wpss12345`;
+        const finalURL = `/maximo/oslc/os/THSRC_WPSS_COUNTINGL?${queryString}`;
+        
+        // Redirect to the final URL
+        window.location.href = finalURL;
+    });
     </script>
 </body>
 </html>
