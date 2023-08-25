@@ -8,6 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import javax.servlet.http.HttpServletRequest;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.systextest.demo.model.Data_5;
@@ -39,6 +43,16 @@ public class Item5Controller {
 			item.setInspectionrequired(0);
 			item.setRefpack("");
 			item.setHasshelflife(0);
+			// Get the HttpServletRequest
+	        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+
+	        // Get the request URL and other relevant information
+	        String requestUrl = request.getRequestURL().toString();
+	        String queryString = request.getQueryString();
+	        String fullUrl = (queryString == null) ? requestUrl : requestUrl + "?" + queryString;
+
+	        // Log the URL
+	        logger.info("[Item5]"+"Frontend request URL: " + fullUrl);
 			logger.info(objectMapper.writeValueAsString(item.getMap()));
 //			logger.info("Response JSON: {}", item);
 //			logger.info("Response JSON: {}", objectMapper.writeValueAsString(item));
