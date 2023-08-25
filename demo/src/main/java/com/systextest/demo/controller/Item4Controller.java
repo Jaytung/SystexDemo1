@@ -5,12 +5,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.systextest.demo.model.*;
@@ -56,8 +61,15 @@ public class Item4Controller {
 			data_4.setLocation(locationConditions);
 		}
 
-		
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
 
+        String requestUrl = request.getRequestURL().toString();
+        String queryString = request.getQueryString();
+        String fullUrl = (queryString == null) ? requestUrl : requestUrl + "?" + queryString;
+
+		logger.info("MAXIMO需協助開發程式支數-項目4 週轉件設備盤點清冊");
+		logger.info(fullUrl);
+		logger.info("JSON");
 		logger.info(data_4.toString());
 		ModelAndView modelAndView = new ModelAndView("result4"); // Specify the HTML file name without the extension
         modelAndView.addObject("jsonData", data_4.getMap()); // Pass the JSON data to the view
