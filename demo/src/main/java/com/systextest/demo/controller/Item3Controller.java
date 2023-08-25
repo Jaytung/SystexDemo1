@@ -3,6 +3,8 @@ package com.systextest.demo.controller;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -55,6 +59,11 @@ public class Item3Controller {
 		if (!locationConditions.isEmpty()) {
 			data_3.setLocation(locationConditions);
 		}
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+
+        String requestUrl = request.getRequestURL().toString();
+        String queryString = request.getQueryString();
+        String fullUrl = (queryString == null) ? requestUrl : requestUrl + "?" + queryString;
 
 //		System.out.println("oslc.select : " + select);
 //		System.out.println("_dropnulls : " + dropNulls);
@@ -64,9 +73,10 @@ public class Item3Controller {
 //		System.out.println("Location: " + locationConditions);
 //		System.out.println("Start Date: " + startDate);
 //		System.out.println("End Date: " + endDate);
+		logger.info("MAXIMO需協助開發程式支數-項目3 庫存(異動)盤點清冊");
+		logger.info(fullUrl);
+		logger.info("JSON");
 		logger.info(data_3.toString());
-		
-		
 		ModelAndView modelAndView = new ModelAndView("result3"); // Specify the HTML file name without the extension
         modelAndView.addObject("jsonData", data_3.getMap()); // Pass the JSON data to the view
 		return modelAndView;
