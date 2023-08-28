@@ -1,71 +1,62 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Storeroom Form</title>
+<title>Storeroom Form</title>
 </head>
 <body>
-    <h1>Storeroom Form</h1>
-    <form id="storeroomForm" method="GET">
-        <label for="startDate">Storeroom:</label>
-        <input type="text" id="Text" name="oslc.where" value="LD,WD" required>*<br><br>
-        
-        <label for="startDate">From Bin(01,02,03......):</label>
-        <input type="text" id="startDate" name="startDate" value="01" required><br><br>
+	<h1>Storeroom Form</h1>
+	<form id="storeroomForm" method="GET">
+		<label for="startDate">Storeroom:</label> <input type="text" id="Text"
+			name="oslc.where" value="LD,WD" required>*<br>
+		<br> <label for="startDate">From Bin(01,02,03......):</label> <input
+			type="text" id="startDate" name="startDate" value="01" required><br>
+		<br> <label for="endDate">To Bin(01,02,03......):</label> <input
+			type="text" id="endDate" name="endDate" value="06" required><br>
+		<br> <label for="selectOption">Select Option:</label> <select
+			id="selectOption" name="selectOption" required>
+			<option value="A">A</option>
+			<option value="B">B</option>
+		</select>*<br>
+		<br> <label>Options:</label><br> <input type="radio"
+			id="optionNormal" name="option" value="normal" checked> <label
+			for="optionNormal">立即</label><br> <input type="radio"
+			id="optionDate" name="option" value="date"> <label
+			for="optionDate">此時</label> <input type="date" id="customDate"
+			name="customDate" disabled><br> <input type="radio"
+			id="optionText" name="option" value="text"> <label
+			for="optionText">定期</label> <input type="text" id="customText"
+			name="customText" disabled><br>
+		<br> <input type="submit" value="Submit">
+	</form>
 
-        <label for="endDate">To Bin(01,02,03......):</label>
-        <input type="text" id="endDate" name="endDate" value="06" required><br><br>
+	<script>
+	const storeroomForm = document.getElementById("storeroomForm");
 
-		<label for="selectOption">Select Option:</label>
-        <select id="selectOption" name="selectOption" required>
-            <option value="A">A</option>
-            <option value="B">B</option>
-        </select>*<br><br>
-        
-        <label>Options:</label><br>
-        <input type="radio" id="optionNormal" name="option" value="normal" checked>
-        <label for="optionNormal">立即</label><br>
+	storeroomForm.addEventListener("submit", function (event) {
+	    event.preventDefault();
+		const storeroomValue = document.getElementById("Text").value;
+	    const storerooms = storeroomValue.split(',').map(s => `"${s}"`).join(',');
+	    const startDateValue = document.getElementById("startDate").value;
+	    const endDateValue = document.getElementById("endDate").value;
 
-        <input type="radio" id="optionDate" name="option" value="date">
-        <label for="optionDate">此時</label>
-        <input type="date" id="customDate" name="customDate" disabled><br>
+	    let oslcWhere = `location+in+[${storerooms}] and bin>="${startDateValue}" and bin<="${endDateValue}"`;
 
-        <input type="radio" id="optionText" name="option" value="text">
-        <label for="optionText">定期</label>
-        <input type="text" id="customText" name="customText" disabled><br><br>
+	    // Append options if needed
+	    const selectedOption = document.querySelector('input[name="option"]:checked').value;
+	    if (selectedOption === "date") {
+	        const customDateValue = document.getElementById("customDate").value;
+	        oslcWhere += ` and ${customDateValue}`;
+	    } else if (selectedOption === "text") {
+	        const customTextValue = document.getElementById("customText").value;
+	        oslcWhere += ` and ${customTextValue}`;
+	    }
 
-        <input type="submit" value="Submit">
-    </form>
-
-    <script>
-        const storeroomForm = document.getElementById("storeroomForm");
-
-storeroomForm.addEventListener("submit", function (event) {
-    event.preventDefault();
-    
-    const storeroomValue = document.getElementById("Text").value;
-    const startDateValue = document.getElementById("startDate").value;
-    const endDateValue = document.getElementById("endDate").value;
-
-    let oslcWhere = `location+in+[${storeroomValue}] and bin>="${startDateValue}" and bin<="${endDateValue}"`;
-
-    // Append options if needed
-    const selectedOption = document.querySelector('input[name="option"]:checked').value;
-    if (selectedOption === "date") {
-        const customDateValue = document.getElementById("customDate").value;
-        oslcWhere += ` and ${customDateValue}`;
-    } else if (selectedOption === "text") {
-        const customTextValue = document.getElementById("customText").value;
-        oslcWhere += ` and ${customTextValue}`;
-    }
-
-    const queryString = `oslc.select=*&_dropnulls=0&oslc.where=${encodeURIComponent(oslcWhere)}&_lid=WPSS_USER&_lpwd=Wpss12345`;
-    const finalURL = `/maximo/oslc/os/THSRC_WPSS_ROT?${queryString}`;
-    
-    // Redirect to the final URL
-    window.location.href = finalURL;
-});
-
-
-    </script>
-</body>
+	    const queryString = `oslc.select=*&_dropnulls=0&oslc.where=${encodeURIComponent(oslcWhere)}&_lid=WPSS_USER&_lpwd=Wpss12345`;
+	    const finalURL = `/maximo/oslc/os/THSRC_WPSS_ROT?${queryString}`;
+	    
+	    // Redirect to the final URL
+	    window.location.href = finalURL;
+	});
+				</script>
+	</body>
 </html>

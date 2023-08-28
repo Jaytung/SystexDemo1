@@ -71,5 +71,68 @@
                 </tr>
             </table>
         </form>
+        <script>
+    const storeroomForm = document.getElementById("myForm");
+
+    storeroomForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+    	
+        const storeroomValue = document.getElementById("location").value;
+        const storerooms = storeroomValue.split(',').map(s => `"${s}"`).join(',');
+        
+        const startDateValue = document.getElementById("startdate").value;
+        const endDateValue = document.getElementById("enddate").value;
+        
+        const hasshelflife = document.getElementById("hasshelflife").value;
+        
+        const ABC = document.getElementById("ABC").value;
+        let ABCstr;
+        const fromBin = document.getElementById("fromBin").value;
+        var fromBin1 ;
+        const toBin = document.getElementById("toBin").value;
+        var toBin1;
+        const stockCheck = document.getElementById("stockCheck").value;
+        const stockSort = document.getElementById("stockSort").value;
+        
+        if (ABC === "A") {
+        	ABCstr = "baltype_a=\"Y\"";
+            console.log(ABC);
+        } else if (ABC === "B"){
+        	ABCstr = "baltype_b=\"Y\"";
+            console.log(ABC);
+        }	else if (ABC === "C"){
+        	ABCstr = "baltype_c=\"Y\"";
+            console.log(ABC);
+        }
+        
+        if (fromBin.length<10) {
+        	fromBin1 = "bin_0" + fromBin.length;
+        } else {
+        	fromBin1 = "bin_" + fromBin.length;
+        }	
+    
+	    if (toBin.length<10) {
+	    	toBin1 = "bin_0" + toBin.length;
+	    } else {
+	    	toBin1 = "bin_" + toBin.length;
+	    }	
+	    var Tosort ;
+	    if (stockCheck==="A") {
+	    	Tosort = "physcntdate";
+	    } else {
+	    	Tosort = "curbalchgadate";
+	    }
+	    
+        let oslcWhere = `location+in+[${storerooms}] and "${Tosort}">="${startDateValue}" and "${Tosort}"<="${endDateValue}" and hasshelflife="${hasshelflife}" and "${ABCstr}" and "${fromBin1}"="${fromBin}" and "${toBin1}"="${toBin}"`;
+        
+	
+        const queryString = `oslc.select=*&_dropnulls=0&oslc.where=${encodeURIComponent(oslcWhere)}&_lid=WPSS_USER&_lpwd=Wpss12345`;
+        	
+        const finalURL = `/maximo/oslc/os/THSRC_WPSS_STO?${queryString}`;
+        console.log(finalURL);
+        window.location.href = finalURL;
+        // Redirect to the final URL
+    });
+    </script>
     </body>
 </html>
